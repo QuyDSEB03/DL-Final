@@ -1,14 +1,24 @@
 import os
 import json
 from PIL import Image
-
 import numpy as np
 import tensorflow as tf
 import streamlit as st
+import gdown
 
 
 working_dir = os.path.dirname(os.path.abspath(__file__))
-model_path = f"{working_dir}/trained_model/plant_disease_prediction_model.h5"
+model_dir = f"{working_dir}/trained_model"
+os.makedirs(model_dir, exist_ok=True)
+model_path = f"{model_dir}/plant_disease_prediction_model.h5"
+# Google Drive file ID
+model_url = "https://drive.google.com/file/d/1rKh-IElSdHTqax7XdfSdZTn-r8T_qWPf/view?usp=drive_link"  # Thay <file_id> bằng ID file của bạn
+
+# Download model if not present
+if not os.path.exists(model_path):
+    st.info("Downloading model...")
+    gdown.download(model_url, model_path, quiet=False)
+    st.success("Model downloaded successfully!")
 # Load the pre-trained model
 model = tf.keras.models.load_model(model_path)
 
